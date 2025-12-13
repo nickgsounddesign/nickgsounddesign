@@ -12,7 +12,7 @@
     .content { position: relative; z-index: 10; display: flex; flex-direction: column; align-items: center; padding-top: 0; }
     
     h1 { 
-      margin: 50px 0 25px 0; /* уменьшили нижний отступ */
+      margin: 50px 0 25px 0;
       font-size: 2.5rem; 
       text-align: center; 
       font-family: 'Montserrat', sans-serif; 
@@ -23,7 +23,7 @@
       max-width: 900px; 
       aspect-ratio: 16 / 9; 
       height: auto; 
-      margin: 0 auto 80px auto; /* центрируем и отступ снизу */
+      margin: 0 auto 80px auto;
       display: block;
     }
 
@@ -60,44 +60,63 @@
         <div class="project-text" id="project-text"></div>
 
         <div class="controls">
-          <button id="prev">previous slide</button>
-          <button id="next">next slide</button>
+          <button id="prev">previous game</button>
+          <button id="next">next game</button>
         </div>
       </div>
 
       <div class="slider">
 
-        <div class="slide active" data-text="<strong>Weltkrieg 1 Firestorm:</strong><br>- WW1 FPS game, with massive online battles<br>- Lead Sound Designer responsible for weapon, vehicle, and environmental audio<br>- Full FMOD integration, optimization and audio mastering">
-          <iframe src="https://www.youtube.com/embed/HnWRqfgpCWI?rel=0&modestbranding=1&iv_load_policy=3" frameborder="0" allowfullscreen></iframe>
+        <div class="slide active" data-text="<strong>Weltkrieg 1 Firestorm (iOS / Android)</strong><br>- Lead Sound Designer for weapon audio, artillery, and explosions, focusing on impact, realism, and gameplay readability<br>- Full FMOD integration, including event architecture, parameter-driven systems, mixing, and runtime optimization<br>- Delivered final audio mastering, balancing power, detail, and spatial clarity throughout gameplay">
+          <iframe src="https://www.youtube.com/embed/HnWRqfgpCWI?rel=0&modestbranding=1&iv_load_policy=3&enablejsapi=1" frameborder="0" allowfullscreen></iframe>
         </div>
 
-        <div class="slide" data-text="<strong>Deadside:</strong><br>- Lead Sound Designer responsible for weapon, vehicle, and environmental audio<br>- Developed Impulse Response Reverberation system for realistic spatial soundscapes<br>- Managed audio asset curation and workflow optimization in Unreal Engine">
-          <iframe src="https://www.youtube.com/embed/AvJXz3dm6x4?rel=0&modestbranding=1&iv_load_policy=3" frameborder="0" allowfullscreen></iframe>
+        <div class="slide" data-text="<strong>Deadside (PC / PS5 / Xbox Series X|S)</strong><br>- Lead Sound Designer responsible for weapon, vehicle, and environmental audi<br>- Utilized Impulse Response (IR) reverberation to deliver realistic and dynamic spatial soundscapes<br>- Oversaw audio asset management and workflow optimization within Unreal Engine, ensuring efficient production pipelines and high-quality audio integration">
+          <iframe src="https://www.youtube.com/embed/vV7oKxI_5eA?rel=0&modestbranding=1&iv_load_policy=3&enablejsapi=1" frameborder="0" allowfullscreen></iframe>
         </div>
 
-        <div class="slide" data-text="<strong>World of Warships:</strong><br>- Senior Sound Designer for multi-platform release (PS4/5, Xbox One, iOS)<br>- Collaborated with cross-disciplinary teams using Jira and Git version control<br>- Optimized Wwise audio pipeline for latest-gen consoles, PC, and mobile platforms<br>- Created and integrated ship weapon sounds, UI audio, and new gameplay mechanics (consoles)">
-          <iframe src="https://www.youtube.com/embed/i_aqQ3iGrQM?rel=0&modestbranding=1&iv_load_policy=3" frameborder="0" allowfullscreen></iframe>
+        <div class="slide" data-text="<strong>World of Warships (PC / PS5 / Xbox Series X|S)</strong><br>- Senior Sound Designer for multi-platform release (PS4/5, Xbox One, iOS)<br>- Collaborated with cross-disciplinary teams using Jira and Git version control<br>- Optimized Wwise audio pipeline for latest-gen consoles, PC, and mobile platforms<br>- Created and integrated ship weapon sounds, UI audio, and new gameplay mechanics (consoles)">
+          <iframe src="https://www.youtube.com/embed/i_aqQ3iGrQM?rel=0&modestbranding=1&iv_load_policy=3&enablejsapi=1" frameborder="0" allowfullscreen></iframe>
         </div>
 
         <div class="slide" data-text="<strong>Neodash:</strong><br>- Lead Sound Designer for a UE4-based racing game featuring rhythm-synced, high-energy audio<br>- Integrated reactive audio systems enhancing player immersion<br>- Designed dynamic environmental sound responsive to gameplay and music">
-          <iframe src="https://www.youtube.com/embed/U8FqwGK7aSg?rel=0&modestbranding=1&iv_load_policy=3" frameborder="0" allowfullscreen></iframe>
+          <iframe src="https://www.youtube.com/embed/U8FqwGK7aSg?rel=0&modestbranding=1&iv_load_policy=3&enablejsapi=1" frameborder="0" allowfullscreen></iframe>
         </div>
 
       </div>
     </div>
 
-    <!-- Демка теперь по центру -->
-    <iframe class="main-video" src="https://www.youtube.com/embed/260EdIcqmck?rel=0&modestbranding=1" frameborder="0" allow="encrypted-media" allowfullscreen></iframe>
+    <!-- Первый demo reel -->
+    <iframe class="main-video" src="https://www.youtube.com/embed/BJlsZhucTRA?rel=0&modestbranding=1" frameborder="0" allow="encrypted-media" allowfullscreen></iframe>
+
+    <!-- Второй video-блок без заголовка -->
+    <iframe class="main-video" src="https://www.youtube.com/embed/XDclM74ZV3g?rel=0&modestbranding=1" frameborder="0" allow="encrypted-media" allowfullscreen></iframe>
   </div>
 
+  <script src="https://www.youtube.com/iframe_api"></script>
   <script>
     const slides = document.querySelectorAll('.slide');
     const projectText = document.getElementById('project-text');
     let current = 0;
+    const players = [];
+
+    // Инициализация YouTube плееров
+    function onYouTubeIframeAPIReady() {
+      slides.forEach((slide, i) => {
+        const iframe = slide.querySelector('iframe');
+        players[i] = new YT.Player(iframe, {});
+      });
+    }
 
     function showSlide(index) {
+      // Ставим на паузу текущее видео
+      if(players[current] && players[current].pauseVideo) {
+        players[current].pauseVideo();
+      }
+
       slides.forEach((slide, i) => slide.classList.toggle('active', i === index));
       current = index;
+
       const activeSlide = slides[current];
       if (activeSlide) projectText.innerHTML = activeSlide.dataset.text || '';
     }
@@ -106,6 +125,7 @@
     document.getElementById('next').addEventListener('click', () => showSlide((current + 1) % slides.length));
     showSlide(current);
 
+    // ====== Hex canvas animation ======
     const canvas = document.getElementById('canvas');
     const ctx = canvas.getContext('2d');
     let width = window.innerWidth;
